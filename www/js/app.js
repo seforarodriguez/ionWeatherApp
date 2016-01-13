@@ -45,14 +45,4 @@ angular.module('starter', ['ionic', 'angular-skycons'])
   });
   this.temp = '--'
 
-
-
 });
-
-// .config(function($stateProvider, $urlRouterProvider) {
-  // $stateProvider.state('root', {
-  //   url: '/',
-  //   template: '<h1>Hello World</h1>'
-  // });
-  // $urlRouterProvider.otherwise('/');
-// })
