@@ -23,9 +23,20 @@ angular.module('starter', ['ionic', 'angular-skycons'])
   });
 })
 
-.controller('weatherCtrl', function($http, $scope) {
-    var weather = this;
-  
+.controller('weatherCtrl', function($http) {
+  var weather = this;
+
+  //This is the basic code to the API url without the .json 
+  var apikey = "9bc44996fd23e038";
+  var auto = 'autoip.json'
+  var url = 'http://api.wunderground.com/api/'+ apikey +'/conditions/geolookup/forecast/q/';
+
+  // This is a get call for the first temperature using the autoip.
+  $http.get(url + auto).then(function (res) {
+      console.log(res)
+      weather.temp = parseInt(res.data.current_observation.temp_f);
+  });
+
   navigator.geolocation.getCurrentPosition(function(geopos) {
 
     console.log(geopos)
@@ -33,18 +44,33 @@ angular.module('starter', ['ionic', 'angular-skycons'])
     var long = geopos.coords.longitude;
     var apikey = "9bc44996fd23e038";
 
-    var url = 'http://api.wunderground.com/api/9bc44996fd23e038/conditions/geolookup/forecast/q/autoip.json';
-    // console.log(geopos)
-
-    $http.get(url).then(function (res) {
-      console.log(res)
-      weather.temp = res.data.current_observation.temp_f;
+    nwUrl = url + '/' + lati + ',' + long + '.json'
+    $http.get(nwUrl).then(function (res) {
+      console.log('secondtimearound',res)
+      weather.city = res.data.location.city;
       weather.temp = parseInt(res.data.current_observation.temp_f);
-      
-      
-      
     });
-  });
-  this.temp = '--'
 
+  });
+
+  this.temp = '--';
+
+  weather.search = function () {
+    var reqSearch = url + weather.searchQuery + '.json';
+    $http.get(reqSearch)
+    .then(function (res) { 
+      console.log("this is the one", res); 
+      weather.city = res.data.location.city;
+      weather.temp = parseInt(res.data.current_observation.temp_f);
+      return res
+    })
+    .then(function (resp) {
+      console.log(resp);
+      var station = resp.data.current_observation;
+      console.log(station);
+      localStorage.setItem('searchHistory',
+        resp.data.current_observation.station_id);
+    });
+  };
 });
+

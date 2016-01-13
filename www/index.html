@@ -27,11 +27,20 @@
   </head>
   <body ng-app="starter">
 
-    <ion-pane>
+    <ion-pane ng-controller="weatherCtrl as weather">
       <ion-header-bar class="bar-stable">
-        <h1 class="title">Ionic Blank Starter</h1>
+        <div class="bar bar-header item-input-inset">
+          <label class="item-input-wrapper">
+            <i class="icon ion-ios-search placeholder-icon"></i>
+            <input ng-model="weather.searchQuery" type="search" placeholder="Search">
+          </label>
+          <button class="button button-balanced" ng-click="weather.search()">
+            Search
+          </button>
+        </div>
       </ion-header-bar>
-      <ion-content ng-controller="weatherCtrl as weather">
+      <ion-content class="ionContent">
+        <h2>{{weather.city}}</h2>
         <h1>{{weather.temp}}℉</h1>
         <skycon icon="weather.icon"></skycon>
       </ion-content>
