@@ -27,20 +27,22 @@ angular.module('starter', ['ionic', 'angular-skycons'])
     var weather = this;
   
   navigator.geolocation.getCurrentPosition(function(geopos) {
-    var lat = geopos.coords.latitude;
-    var long = geopos.coords.longitude;
-    var apikey = "81caf873b7d48249826d075667a1ecff";
 
-    var url = '/api/forecast/' + apikey + '/' + lat + ',' + long;
     console.log(geopos)
+    var lati = geopos.coords.latitude;
+    var long = geopos.coords.longitude;
+    var apikey = "9bc44996fd23e038";
+
+    var url = 'http://api.wunderground.com/api/9bc44996fd23e038/conditions/geolookup/forecast/q/autoip.json';
+    // console.log(geopos)
+
     $http.get(url).then(function (res) {
       console.log(res)
-      weather.temp = parseInt(res.data.currently.temperature);
+      weather.temp = res.data.current_observation.temp_f;
+      weather.temp = parseInt(res.data.current_observation.temp_f);
       
-      weather.icon = res.data.currently.icon;
-      weather.icon.size = 100;
-      console.log("weather",weather.icon)
-      weather.icon.color = "pink";
+      
+      
     });
   });
   this.temp = '--'
