@@ -65,11 +65,13 @@ angular.module('starter', ['ionic', 'angular-skycons'])
       return res
     })
     .then(function (resp) {
+      var storageArray = JSON.parse(localStorage.getItem('searchHistory')) || []; 
       console.log(resp);
-      var station = resp.data.current_observation;
-      console.log(station);
-      localStorage.setItem('searchHistory',
-        resp.data.current_observation.station_id);
+      if(storageArray.indexOf(resp.data.current_observation.station_id) === -1) {
+        storageArray.push(resp.data.current_observation.station_id)  
+        console.log(storageArray)
+      }
+      localStorage.setItem('searchHistory', JSON.stringify(storageArray));
     });
   };
 });
