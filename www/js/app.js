@@ -34,6 +34,7 @@ angular.module('starter', ['ionic', 'angular-skycons'])
   // This is a get call for the first temperature using the autoip.
   $http.get(url + auto).then(function (res) {
       console.log(res)
+      weather.city = res.data.location.city;
       weather.temp = parseInt(res.data.current_observation.temp_f);
   });
 
